@@ -6,9 +6,18 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+import {
+  GraphNodeInternal,
+} from '@virtuaw/graphnodes';
 
 
 export namespace Components {
+  interface VawGraphNode {
+    /**
+    * The GraphNode instance.
+    */
+    'graphnode': GraphNodeInternal;
+  }
   interface VawPiano {
     /**
     * The last key's note (as midi value)
@@ -22,6 +31,12 @@ export namespace Components {
 }
 
 declare namespace LocalJSX {
+  interface VawGraphNode extends JSXBase.HTMLAttributes {
+    /**
+    * The GraphNode instance.
+    */
+    'graphnode'?: GraphNodeInternal;
+  }
   interface VawPiano extends JSXBase.HTMLAttributes {
     /**
     * The last key's note (as midi value)
@@ -34,6 +49,7 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'vaw-graph-node': VawGraphNode;
     'vaw-piano': VawPiano;
   }
 }
@@ -52,6 +68,12 @@ declare global {
 
 
 
+  interface HTMLVawGraphNodeElement extends Components.VawGraphNode, HTMLStencilElement {}
+  var HTMLVawGraphNodeElement: {
+    prototype: HTMLVawGraphNodeElement;
+    new (): HTMLVawGraphNodeElement;
+  };
+
   interface HTMLVawPianoElement extends Components.VawPiano, HTMLStencilElement {}
   var HTMLVawPianoElement: {
     prototype: HTMLVawPianoElement;
@@ -59,6 +81,7 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'vaw-graph-node': HTMLVawGraphNodeElement;
     'vaw-piano': HTMLVawPianoElement;
   }
 

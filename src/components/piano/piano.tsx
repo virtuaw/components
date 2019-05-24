@@ -2,10 +2,10 @@ import { State, Listen, Component, Prop, h } from '@stencil/core';
 
 @Component({
   tag: 'vaw-piano',
-  styleUrl: 'vaw-piano.scss',
+  styleUrl: 'piano.scss',
   shadow: true
 })
-export class VawPiano {
+export class Piano {
   /**
    * The first key's note (as midi value)
    */

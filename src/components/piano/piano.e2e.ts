@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('vaw-piano', () => {
+describe('piano', () => {
   it('renders', async () => {
     const page = await newE2EPage();
 
-    await page.setContent('<vaw-piano />');
-    const element = await page.find('vaw-piano');
+    await page.setContent('<piano />');
+    const element = await page.find('piano');
     expect(element).toHaveClass('hydrated');
   });
 });
