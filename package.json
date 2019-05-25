@@ -28,7 +28,7 @@
     "@storybook/polymer": "^5.0.11",
     "@types/jest": "23.3.14",
     "@types/puppeteer": "1.12.4",
-    "@virtuaw/graphnodes": "^0.2.1",
+    "@virtuaw/graphnodes": "^0.3.3",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "lit-html": "^1.1.0",

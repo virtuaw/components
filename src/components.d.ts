@@ -7,17 +7,16 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  GraphNodeInternal,
+  BaseNode,
 } from '@virtuaw/graphnodes';
 
 
 export namespace Components {
+  interface VawGraph {
+    'nodes': BaseNode[];
+  }
   interface VawGraphNode {
-    /**
-    * The GraphNode instance.
-    */
-    'graphnode': GraphNodeInternal;
-    'onAddConnection': Function;
+    'node': BaseNode;
   }
   interface VawGraphNodeSocket {
     /**
@@ -36,18 +35,6 @@ export namespace Components {
     * Whether this is an input or output socket
     */
     'isInput': boolean;
-    /**
-    * Callback for connection finish event
-    */
-    'onChange': Function;
-    /**
-    * Callback for connection finish event
-    */
-    'onConnectionFinish': Function;
-    /**
-    * Callback for connection start event
-    */
-    'onConnectionStart': Function;
     /**
     * The Socket's title
     */
@@ -70,13 +57,13 @@ export namespace Components {
 }
 
 declare namespace LocalJSX {
+  interface VawGraph extends JSXBase.HTMLAttributes {
+    'nodes'?: BaseNode[];
+  }
   interface VawGraphNode extends JSXBase.HTMLAttributes {
-    /**
-    * The GraphNode instance.
-    */
-    'graphnode'?: GraphNodeInternal;
-    'onAddConnection'?: Function;
-    'onAddConnection'?: (event: CustomEvent<any>) => void;
+    'node'?: BaseNode;
+    'onDragSocket'?: (event: CustomEvent<any>) => void;
+    'onDropSocket'?: (event: CustomEvent<any>) => void;
   }
   interface VawGraphNodeSocket extends JSXBase.HTMLAttributes {
     /**
@@ -96,25 +83,13 @@ declare namespace LocalJSX {
     */
     'isInput'?: boolean;
     /**
-    * Callback for connection finish event
-    */
-    'onChange'?: Function;
-    /**
-    * Input default value change emitter
+    * Callback for connection finish event Input default value change emitter
     */
     'onChange'?: (event: CustomEvent<any>) => void;
     /**
-    * Callback for connection finish event
-    */
-    'onConnectionFinish'?: Function;
-    /**
-    * Event that's emitted when attempting to finish a connection
+    * Callback for connection start event Event that's emitted when attempting to finish a connection
     */
     'onConnectionFinish'?: (event: CustomEvent<any>) => void;
-    /**
-    * Callback for connection start event
-    */
-    'onConnectionStart'?: Function;
     /**
     * Event that's emitted when starting to create a connection between two sockets
     */
@@ -140,6 +115,7 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'vaw-graph': VawGraph;
     'vaw-graph-node': VawGraphNode;
     'vaw-graph-node-socket': VawGraphNodeSocket;
     'vaw-piano': VawPiano;
@@ -160,6 +136,12 @@ declare global {
 
 
 
+  interface HTMLVawGraphElement extends Components.VawGraph, HTMLStencilElement {}
+  var HTMLVawGraphElement: {
+    prototype: HTMLVawGraphElement;
+    new (): HTMLVawGraphElement;
+  };
+
   interface HTMLVawGraphNodeElement extends Components.VawGraphNode, HTMLStencilElement {}
   var HTMLVawGraphNodeElement: {
     prototype: HTMLVawGraphNodeElement;
@@ -179,6 +161,7 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'vaw-graph': HTMLVawGraphElement;
     'vaw-graph-node': HTMLVawGraphNodeElement;
     'vaw-graph-node-socket': HTMLVawGraphNodeSocketElement;
     'vaw-piano': HTMLVawPianoElement;
