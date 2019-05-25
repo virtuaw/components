@@ -1,4 +1,12 @@
-import { Listen, Component, Prop, h } from '@stencil/core';
+import {
+  Event,
+  EventEmitter,
+  State,
+  Listen,
+  Component,
+  Prop,
+  h
+} from "@stencil/core";
 
 import { NodeInput, GraphNode as GraphNodeInternal } from "@virtuaw/graphnodes";
 
@@ -13,11 +21,53 @@ export class GraphNode {
    */
   @Prop() graphnode: GraphNodeInternal = new GraphNodeInternal();
 
-  startConnection(input: NodeInput, event) {
-    input.active = true;
-    console.log(input);
+  @State() connectingSocket: NodeInput = null;
+  @State() connectingFromInput: boolean = null;
+  @State() connectingElement: HTMLElement = null;
+
+  @Listen('document:mouseup')
+  stopConnection() {
+    this.connectingSocket = null;
+    this.connectingFromInput = null;
+    this.connectingElement = null;
+  }
+
+  @Event() addConnection: EventEmitter;
+
+  @Prop() onAddConnection: Function = (...args) => console.log(args);
+
+  startConnection(event, input?: NodeInput, output?: GraphNodeInternal) {
+    const connector = input || output;
+    this.connectingSocket = connector;
+
+    this.connectingFromInput = !!input;
+    this.connectingElement = event.target;
+
+    if (this.connectingFromInput) {
+      connector.active = 'true';
+    }
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  finishConnection(event, input?: NodeInput, output?: GraphNodeInternal) {
+    console.log(input, output, event);
+    if (!input && !!this.connectingFromInput || !!input && !this.connectingFromInput) {
+      this.stopConnection();
+      input ? input.active = 'false' : this.connectingSocket.active = 'false';
+      return;
+    }
+
+    input = input || this.connectingSocket;
+    output = NodeInput || this.connectingSocket;
+
+    const inputElement = !!input ? event.target : this.connectingElement;
+    const outputElement = !input ? event.target : this.connectingElement;
+
+    input.connect(output);
+
+    this.addConnection.emit();
+    this.onAddConnection(input, output, inputElement, outputElement, event);
   }
 
   disconnect(input: NodeInput) {
@@ -30,8 +80,8 @@ export class GraphNode {
 
   private getInput(input: NodeInput) {
     const { active, title, value, allowInput, allowConnection } = input;
-    const onConnectionStart = event => console.log(event, input);
-    const onConnectionEnd = event => console.log(event, input);
+    const onConnectionStart = event => this.startConnection(event, input, null);
+    const onConnectionFinish = event => this.finishConnection(event, input, null);
     const args = {
       isInput: true,
       active,
@@ -40,14 +90,18 @@ export class GraphNode {
       allowInput,
       allowConnection,
       onConnectionStart,
-      onConnectionEnd
+      onConnectionFinish
     };
 
-    // const classNames = 'socket' + (input.active && ' active');
+    return <vaw-graph-node-socket {...args}></vaw-graph-node-socket>;
+  }
 
-    // const onMouseDown = (event) => this.startConnection(input, event);
-    // const onClick = () => this.disconnect(input);
-    // const onInput = (event) => this.handleChange(input, event);
+  private getOutput() {
+    const title = this.graphnode.output;
+    const isInput = false;
+    const onConnectionStart = event => this.startConnection(event, this, null);
+    const onConnectionFinish = event => this.finishConnection(event, this, null);
+    const args = { title, isInput, onConnectionStart, onConnectionFinish };
 
     return <vaw-graph-node-socket {...args}></vaw-graph-node-socket>;
   }
@@ -61,8 +115,7 @@ export class GraphNode {
             {this.graphnode.inputs.map((input) => this.getInput(input))}
           </div>
           <div class="interface output">
-            <vaw-graph-node-socket title={this.graphnode.output} isInput="false">
-            </vaw-graph-node-socket>
+            {this.getOutput()}
           </div>
         </div>
       </div>

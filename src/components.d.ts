@@ -17,6 +17,7 @@ export namespace Components {
     * The GraphNode instance.
     */
     'graphnode': GraphNodeInternal;
+    'onAddConnection': Function;
   }
   interface VawGraphNodeSocket {
     /**
@@ -74,6 +75,8 @@ declare namespace LocalJSX {
     * The GraphNode instance.
     */
     'graphnode'?: GraphNodeInternal;
+    'onAddConnection'?: Function;
+    'onAddConnection'?: (event: CustomEvent<any>) => void;
   }
   interface VawGraphNodeSocket extends JSXBase.HTMLAttributes {
     /**
