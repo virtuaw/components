@@ -19,17 +19,25 @@
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "storybook": "start-storybook -p 9001 -c .storybook -s www"
   },
   "devDependencies": {
     "@stencil/core": "1.0.0-beta.5",
     "@stencil/sass": "^0.2.3",
+    "@storybook/polymer": "^5.0.11",
     "@types/jest": "23.3.14",
     "@types/puppeteer": "1.12.4",
     "@virtuaw/graphnodes": "^0.2.1",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
+    "lit-html": "^1.1.0",
+    "polymer-webpack-loader": "^2.0.3",
     "puppeteer": "1.14.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "babel-loader": "^8.0.6"
+  }
 }

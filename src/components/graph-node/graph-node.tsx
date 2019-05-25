@@ -1,6 +1,6 @@
 import { Component, Prop, h } from '@stencil/core';
 
-import { NodeInput, math, GraphNode as GraphNodeInternal } from "@virtuaw/graphnodes";
+import { NodeInput, GraphNode as GraphNodeInternal } from "@virtuaw/graphnodes";
 
 @Component({
   tag: 'vaw-graph-node',
@@ -11,11 +11,7 @@ export class GraphNode {
   /**
    * The GraphNode instance.
    */
-  @Prop() graphnode: GraphNodeInternal = new math.SumNode([
-    new NodeInput<number>('a'),
-    new NodeInput<number>('b'),
-    new NodeInput<number>('c'),
-  ]);
+  @Prop() graphnode: GraphNodeInternal = new GraphNodeInternal();
 
   onMouseDown(input: NodeInput) {
     console.log(input);
