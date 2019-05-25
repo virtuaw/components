@@ -13,35 +13,32 @@ export class GraphNode {
    */
   @Prop() graphnode: GraphNodeInternal = new GraphNodeInternal();
 
-  onMouseDown(input: NodeInput) {
+  startConnection(input: NodeInput, event) {
+    input.active = true;
     console.log(input);
+    event.preventDefault();
+    event.stopPropagation();
   }
 
-  onClick(input: NodeInput) {
-    console.log(input);
+  disconnect(input: NodeInput) {
+    input.graph = null;
   }
 
   handleChange(input: NodeInput, event) {
     input.defaultValue = event.value;
   }
 
-  getInput(input: NodeInput) {
-    const { allowInput, title, value } = input;
+  private getInput(input: NodeInput) {
+    const { active, title, value, allowInput, allowConnection } = input;
+    const args = { isInput: true, active, title, value, allowInput, allowConnection };
 
-    const onMouseDown = () => this.onMouseDown(input);
-    const onClick = () => this.onClick(input);
-    const onInput = (event) => this.handleChange(input, event);
+    // const classNames = 'socket' + (input.active && ' active');
 
-    const socketArgs = { class: 'socket', title, allowInput, onMouseDown, onClick };
-    const inputArgs = { value, onInput };
+    // const onMouseDown = (event) => this.startConnection(input, event);
+    // const onClick = () => this.disconnect(input);
+    // const onInput = (event) => this.handleChange(input, event);
 
-    return (
-      <div>
-        <div {...socketArgs}></div>
-        {input.allowInput ? <input {...inputArgs} /> : null}
-        <span class="input-title">{input.title}</span>
-      </div>
-    );
+    return <vaw-graph-node-socket {...args}></vaw-graph-node-socket>;
   }
 
   render() {
@@ -50,13 +47,11 @@ export class GraphNode {
         <div class="header">{this.graphnode.title}</div>
         <div class="body">
           <div class="interface inputs">
-            {this.graphnode.inputs.map(this.getInput)}
+            {this.graphnode.inputs.map((input) => this.getInput(input))}
           </div>
           <div class="interface output">
-            <div>
-              <div class="socket" title={this.graphnode.output}></div>
-              <span class="output-title">{this.graphnode.output}</span>
-            </div>
+            <vaw-graph-node-socket title={this.graphnode.output} isInput="false">
+            </vaw-graph-node-socket>
           </div>
         </div>
       </div>

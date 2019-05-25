@@ -18,6 +18,32 @@ export namespace Components {
     */
     'graphnode': GraphNodeInternal;
   }
+  interface VawGraphNodeSocket {
+    /**
+    * Whether the socket is connected / currently connecting
+    */
+    'active': boolean;
+    /**
+    * Whether to show the socket connector if this is an input socket
+    */
+    'allowConnection': boolean;
+    /**
+    * Whether to show the input field if this is an input socket
+    */
+    'allowInput': boolean;
+    /**
+    * Whether this is an input or output socket
+    */
+    'isInput': boolean;
+    /**
+    * The Socket's title
+    */
+    'title': string;
+    /**
+    * The Socket's current value
+    */
+    'value': any;
+  }
   interface VawPiano {
     /**
     * The last key's note (as midi value)
@@ -37,6 +63,32 @@ declare namespace LocalJSX {
     */
     'graphnode'?: GraphNodeInternal;
   }
+  interface VawGraphNodeSocket extends JSXBase.HTMLAttributes {
+    /**
+    * Whether the socket is connected / currently connecting
+    */
+    'active'?: boolean;
+    /**
+    * Whether to show the socket connector if this is an input socket
+    */
+    'allowConnection'?: boolean;
+    /**
+    * Whether to show the input field if this is an input socket
+    */
+    'allowInput'?: boolean;
+    /**
+    * Whether this is an input or output socket
+    */
+    'isInput'?: boolean;
+    /**
+    * The Socket's title
+    */
+    'title'?: string;
+    /**
+    * The Socket's current value
+    */
+    'value'?: any;
+  }
   interface VawPiano extends JSXBase.HTMLAttributes {
     /**
     * The last key's note (as midi value)
@@ -50,6 +102,7 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'vaw-graph-node': VawGraphNode;
+    'vaw-graph-node-socket': VawGraphNodeSocket;
     'vaw-piano': VawPiano;
   }
 }
@@ -74,6 +127,12 @@ declare global {
     new (): HTMLVawGraphNodeElement;
   };
 
+  interface HTMLVawGraphNodeSocketElement extends Components.VawGraphNodeSocket, HTMLStencilElement {}
+  var HTMLVawGraphNodeSocketElement: {
+    prototype: HTMLVawGraphNodeSocketElement;
+    new (): HTMLVawGraphNodeSocketElement;
+  };
+
   interface HTMLVawPianoElement extends Components.VawPiano, HTMLStencilElement {}
   var HTMLVawPianoElement: {
     prototype: HTMLVawPianoElement;
@@ -82,6 +141,7 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'vaw-graph-node': HTMLVawGraphNodeElement;
+    'vaw-graph-node-socket': HTMLVawGraphNodeSocketElement;
     'vaw-piano': HTMLVawPianoElement;
   }
 

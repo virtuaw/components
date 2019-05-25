@@ -22,4 +22,3 @@ stories.add('custom node', () => {
   graphNodeElement.graphnode = node;
   return graphNodeElement;
 });
-storis
