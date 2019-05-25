@@ -36,6 +36,18 @@ export namespace Components {
     */
     'isInput': boolean;
     /**
+    * Callback for connection finish event
+    */
+    'onChange': Function;
+    /**
+    * Callback for connection finish event
+    */
+    'onConnectionFinish': Function;
+    /**
+    * Callback for connection start event
+    */
+    'onConnectionStart': Function;
+    /**
     * The Socket's title
     */
     'title': string;
@@ -80,6 +92,30 @@ declare namespace LocalJSX {
     * Whether this is an input or output socket
     */
     'isInput'?: boolean;
+    /**
+    * Callback for connection finish event
+    */
+    'onChange'?: Function;
+    /**
+    * Input default value change emitter
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
+    /**
+    * Callback for connection finish event
+    */
+    'onConnectionFinish'?: Function;
+    /**
+    * Event that's emitted when attempting to finish a connection
+    */
+    'onConnectionFinish'?: (event: CustomEvent<any>) => void;
+    /**
+    * Callback for connection start event
+    */
+    'onConnectionStart'?: Function;
+    /**
+    * Event that's emitted when starting to create a connection between two sockets
+    */
+    'onConnectionStart'?: (event: CustomEvent<any>) => void;
     /**
     * The Socket's title
     */

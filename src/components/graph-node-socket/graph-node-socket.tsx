@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Event, EventEmitter, Component, Prop, h } from '@stencil/core';
 
 @Component({
   tag: 'vaw-graph-node-socket',
@@ -36,18 +36,57 @@ export class GraphNodeSocket {
    */
   @Prop() isInput: boolean = true;
 
-  handleChange(event) {
-    console.log(event);
-  }
+  /**
+   * Event that's emitted when starting to create a connection between two sockets
+   */
+  @Event() connectionStart: EventEmitter;
+
+  /**
+   * Callback for connection start event
+   */
+  @Prop() onConnectionStart: Function = () => null;
+
+  /**
+   * Event that's emitted when attempting to finish a connection
+   */
+  @Event() connectionFinish: EventEmitter;
+
+  /**
+   * Callback for connection finish event
+   */
+  @Prop() onConnectionFinish: Function = () => null;
+
+  /**
+   * Input default value change emitter
+   */
+  @Event() change: EventEmitter;
+
+  /**
+   * Callback for connection finish event
+   */
+  @Prop() onChange: Function = () => null;
 
   render() {
     const { active, title, value, allowInput, allowConnection, isInput } = this;
 
     const classNames = `socket ${active && 'active'} ${isInput ? 'input' : 'output'}`;
 
-    const onInput = (event) => this.handleChange(event);
+    const onInput = (event) => {
+      this.change.emit(event.value);
+      this.onChange(event);
+    };
 
-    const socketArgs = { class: classNames, title, allowInput };
+    const onMouseDown = (event) => {
+      this.connectionStart.emit();
+      this.onConnectionStart(event);
+    }
+
+    const onMouseUp = () => {
+      this.connectionFinish.emit();
+      this.onConnectionFinish(event);
+    }
+
+    const socketArgs = { class: classNames, title, allowInput, onMouseDown, onMouseUp };
     const inputArgs = { value, onInput };
     const showInput = allowInput && isInput;
     const showConnection = allowConnection || !isInput;

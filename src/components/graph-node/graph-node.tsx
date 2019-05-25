@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Listen, Component, Prop, h } from '@stencil/core';
 
 import { NodeInput, GraphNode as GraphNodeInternal } from "@virtuaw/graphnodes";
 
@@ -30,7 +30,18 @@ export class GraphNode {
 
   private getInput(input: NodeInput) {
     const { active, title, value, allowInput, allowConnection } = input;
-    const args = { isInput: true, active, title, value, allowInput, allowConnection };
+    const onConnectionStart = event => console.log(event, input);
+    const onConnectionEnd = event => console.log(event, input);
+    const args = {
+      isInput: true,
+      active,
+      title,
+      value,
+      allowInput,
+      allowConnection,
+      onConnectionStart,
+      onConnectionEnd
+    };
 
     // const classNames = 'socket' + (input.active && ' active');
 
