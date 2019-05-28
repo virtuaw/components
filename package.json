@@ -1,7 +1,8 @@
 {
   "name": "@virtuaw/components",
   "author": "Tibor Pilz",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "repository": "https://github.com/virtuaw/components",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
