@@ -1,4 +1,4 @@
-import { State, Prop, Listen, Component, h } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 
 @Component({
   tag: 'vaw-template',
@@ -7,6 +7,6 @@ import { State, Prop, Listen, Component, h } from '@stencil/core';
 })
 export class Template {
   render() {
-    return `template`;
+    return <p>template</p>;
   }
 }
